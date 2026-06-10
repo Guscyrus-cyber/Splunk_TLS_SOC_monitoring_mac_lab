@@ -10,21 +10,7 @@ TLS index already exists
 
 **Upload TLS Dataset**
 
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
+
 Dataset: tls_traffic.log\
 Settings:
 
@@ -34,6 +20,8 @@ Sourcetype: tls_traffic
 
 Description: TLS traffic generated from packet capture analysis was ingested into Splunk Enterprise to support encrypted traffic monitoring and HTTPS activity investigations.
 
+Please refer to the corresponding query and supporting screenshots in the repository.
+
 **Verify Ingestion**
 
 Search: index=tls\
@@ -42,10 +30,9 @@ source="tls_traffic.log" host="MacBookPro" index="tls" sourcetype="tls_traffic"\
 \
 Purpose: Verify successful TLS data ingestion.
 
-\
-\
-\
-Verify Event Count**
+Please refer to the corresponding query and supporting screenshots in the repository.
+
+**Verify Event Count**
 
 Search:\
 index=tls\
@@ -53,18 +40,9 @@ index=tls\
 
 Purpose: Confirm TLS event availability.
 
-**\
-\
-\
-\
-\
-\
-\
-\**
-\
-\
-\
-Review TLS Traffic**
+Please refer to the corresponding query and supporting screenshots in the repository.
+
+**Review TLS Traffic**
 
 Search:\
 index=tls\
@@ -72,26 +50,17 @@ index=tls\
 
 Purpose: Review encrypted traffic and HTTPS communications.
 
-\
-\
-\**
-\
-\
-\
-\
-\
-\
-\**
-\
-\
-Identify HTTPS Traffic**
+Please refer to the corresponding query and supporting screenshots in the repository.
+
+**Identify HTTPS Traffic**
 
 Search: index=tls 443
 
 Purpose: Identify HTTPS communications using port 443.
 
-\
-**Identify QUIC Traffic\**
+Please refer to the corresponding query and supporting screenshots in the repository.
+
+**Identify QUIC Traffic**
 \
 QUIC (Quick UDP Internet Connections) is a modern transport layer protocol that serves as the foundation for HTTP/3. While traditional HTTPS 443 traffic relies on TCP and TLS separately, QUIC natively integrates encryption over UDP. This allows QUIC to establish secure connections much faster and avoid the "stalling" caused by lost data packets
 
@@ -100,7 +69,8 @@ The fundamental differences between QUIC (UDP 443) and traditional HTTPS (TCP 44
 Search: index=tls quic
 
 Purpose: Identify QUIC protocol activity over UDP 443.\
-\
+
+Please refer to the corresponding query and supporting screenshots in the repository.
 
 **Secure Web Applications**
 
@@ -108,22 +78,15 @@ index=tls (443 OR 8443)
 
 Purpose: Identify standard and non-standard HTTPS communications.
 
-**\
-\
-\
-\
-\**
-\
-\
-\
-Cloud and Application Traffic**
+Please refer to the corresponding query and supporting screenshots in the repository.
+
+**Cloud and Application Traffic**
 
 index=tls (443 OR 8443 OR 9443)
 
 Purpose: Identify encrypted communications commonly used by cloud services and enterprise applications.
 
-\
-Identify External IP Addresses**
+**Identify External IP Addresses**
 
 Search:\
 index=tls\
@@ -139,22 +102,9 @@ Looking for entries such as:
 
 Purpose: Identify external systems communicating through encrypted channels.
 
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-Analyst Observation
+Please refer to the corresponding query and supporting screenshots in the repository.
+
+**Analyst Observation**
 
 The TLS dataset shows:
 
@@ -178,9 +128,6 @@ This indicates repeated encrypted HTTP/3 (QUIC) communications between the endpo
 
 Threat-hunting analysis identified multiple external systems communicating with the endpoint over encrypted TLS and QUIC protocols. The investigation revealed HTTPS traffic on port 443 and repeated QUIC communications with external cloud-hosted services. No suspicious destinations were identified, demonstrating normal encrypted Internet activity and secure communications monitoring within a SOC environment.
 
-Top of Form
-
-Bottom of Form
 
 **Search for Apple Services**
 
@@ -188,12 +135,11 @@ Search: index=tls 17.253
 
 Purpose: Identify Apple-related encrypted communications.
 
-\**
 The output indicates encrypted communications with an Apple-owned service over HTTPS/TLS.
 
 Query used: index=tls 17.253
 
-### Analysis
+**Analysis**
 
 The TLS dataset contains communications between:
 
@@ -210,11 +156,11 @@ The connection shows: Flags \[P.\] which indicates data was transmitted.
 
 and later: Flags \[F.\]which indicates the connection was gracefully closed after the data exchange completed.
 
-### Analyst Observation
+**Analyst Observation**
 
 The TLS investigation identified encrypted communications between the endpoint and an external Apple-owned service operating on port 443. The connection successfully exchanged data and terminated normally, indicating legitimate encrypted traffic rather than suspicious behavior. The activity demonstrates normal HTTPS communications with Apple infrastructure and highlights the use of TLS monitoring to identify external service providers communicating with the endpoint.
 
-### Important Finding
+**Important Finding**
 
 17.253.3.195:443
 
@@ -231,31 +177,10 @@ No unusual ports
 
 Analysis of TLS traffic identified encrypted HTTPS communications with Apple infrastructure on port 443. The connection successfully exchanged data and terminated normally, demonstrating legitimate encrypted communications and providing visibility into external service interactions within the TLS monitoring environment.
 
-**\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-Visualization**
+**Visualization**
 
 Query:\
-\
-\
-\
+
 index=tls\
 \| stats count\
 \
@@ -275,15 +200,13 @@ Report Name: TLS Traffic Report
 
 Description: Summarizes encrypted traffic activity observed within the TLS dataset.
 
-\
-Dashboard**
+**Dashboard**
 
 Dashboard Name: TLS SOC Monitoring Dashboard
 
 Panel Title: TLS Activity Overview
 
 Description: Provides visibility into encrypted network communications and HTTPS activity.\
-\
 
 **Alert**
 
@@ -293,10 +216,7 @@ Alert Name: Encrypted Traffic Detection
 
 Description: Detects encrypted network communications using TLS and HTTPS protocols.
 
-\**
-\
-\
-Detection Rule**
+**Detection Rule**
 
 Query:\
 index=tls\
@@ -306,24 +226,17 @@ Detection Name: TLS Communication Detection
 
 Description: Detects encrypted communications and secure network protocols observed in the environment.
 
-\
-Threat Hunting\**
+**Threat Hunting**
 Query:\
 index=tls\
 \| table \_time host sourcetype \_raw
 
 Purpose: Investigate encrypted communications, external destinations, cloud services, and unusual TLS activity that may indicate malware communications, command-and-control traffic, or unauthorized external connections.
 
-**\
-\
-\
-\
-\**
-\
-\
-Threat Hunting**, the TLS investigation revealed several useful findings.
 
-### Threat Hunting Findings
+In Threat Hunting, the TLS investigation revealed several useful findings.
+
+**Threat Hunting Findings**
 
 #### **1. Multiple External Encrypted Connections**
 
@@ -386,29 +299,4 @@ Threat hunting identified normal encrypted Internet communications using TLS and
 
 TLS threat-hunting analysis identified encrypted HTTPS and QUIC communications with multiple external services. The investigation revealed normal encrypted web traffic, Apple service communications, HTTP/3 activity, and secure data transfers, demonstrating how TLS monitoring can provide visibility into encrypted network activity within a SOC environment.
 
-Top of Form
 
-Bottom of Form
-
-**\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\**
